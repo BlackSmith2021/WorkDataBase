@@ -1,55 +1,38 @@
 import  psycopg2  # импорт библиотеки
+from class_of_change import Change
+dbname = None
+user = None
+password = None
+host = None
 
-con = psycopg2.connect(dbname='WorkBase', user='postgres',
-                        password='14319', host='localhost')  # связь с базой данных  # связь с базой данных
-cursor = con.cursor()  # создание обькта для взаимодействия с базой
+with open('AutrisingConfig.txt', 'r') as f:
+    str_read = f.readlines()
+    print(str_read)
+    for i in str_read:
+        if i.find("dbname") != (-1):
+            dbname = i.split('=')[1].strip()
+        elif i.find("user") != (-1):
+            user = i.split('=')[1].strip()
+        elif i.find("password") != (-1):
+            password = i.split('=')[1].strip()
+        elif i.find("host") != (-1):
+            host = i.split('=')[1].strip()
 
-class Change():
-    def __init__(self, table):
-        self.table = table
+if None not in (dbname, user, password, host):
+    con = psycopg2.connect(dbname=dbname, user=user,
+                            password=password, host=host)  # связь с базой данных  # связь с базой данных
+    cursor = con.cursor()  # создание обькта для взаимодействия с базой
 
-    def sett_update(self, num, nam, zna):
-        sql = f"""
-        UPDATE {self.table}
-        SET {nam} = '{zna}'
-        WHERE id = {num}"""
-        cursor.execute(sql)
-        con.commit()
-
-    def appen(self, staff, column):
-        column_r = ",".join(column)
-        if type(staff) == tuple:
-            print("tuple")
-            cursor.execute(f"INSERT INTO {self.table}{column_r} VALUES {staff}")
-        if type(staff) == list:
-            staff_r = ",".join(staff)
-            print("list")
-            cursor.execute(f"INSERT INTO {self.table}{column_r} VALUES {staff_r}")
-        con.commit()
-
-    def delet(self, id_del):
-        cursor.execute(f"DELETE FROM {self.table} WHERE id = '{id_del}'")
-        con.commit()
-
-    def delet_table(self):
-        cursor.execute(f"DROP TABLE {self.table}")
-        con.commit()
-
-
-    def show(self):
-        cursor.execute(f"SELECT * FROM {self.table}")
-        for i in cursor.fetchall():
-            print(i)
-
-
-work_change = Change("staff")
-work_change.show()
-#work_change.sett_update(12, 'lastname', 'Gorin')
-"""work_change.appen(["('Andrey', 'Gubin', 'Ivanovich', 40000, 'ingeneer'),"
-             "('Ivan', 'Solomatin', 'Sergeevich', 38000, 'manager'),"
-             "('Irina', 'Lobacheva', 'Sergeevna', 30000, 'operator'),"
-             "('Lybin', 'Ilya', 'Petrovich', 60000, 'director')"],
-                 ["(firstname, lastname, patronymic, salary, position)"] )"""
+    work_change = Change("staff", cursor, con)
+    #work_change.show()
+    #work_change.delet_table()
+    #work_change.sett_update(12, 'lastname', 'Gorin')
+    """work_change.appen(["('Andrey', 'Gubin', 'Ivanovich', 40000, 'ingeneer'),"
+                 "('Ivan', 'Solomatin', 'Sergeevich', 38000, 'manager'),"
+                 "('Irina', 'Lobacheva', 'Sergeevna', 30000, 'operator'),"
+                 "('Lybin', 'Ilya', 'Petrovich', 60000, 'director')"],
+                     ["(firstname, lastname, patronymic, salary, position)"])"""
+    work_change.show()
 
 
 
