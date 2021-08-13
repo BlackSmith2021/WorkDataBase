@@ -4,6 +4,17 @@ dbname = None
 user = None
 password = None
 host = None
+d_from_property = {}
+
+with open('AutrisingConfig.txt', 'r') as f:
+    str_read = f.readlines()
+    for find_str in str_read:  # перебор строк в файле
+        if find_str.find("=") != -1:  # если строка содержит символ, обрабатываем ее
+            key_find = find_str[:find_str.find("=") -1]  # записываем в переменную ключа строку до символа
+            value_find = find_str[find_str.find("=") +2:find_str.find("/n")]  # записываем в переменную значния по ключу строку после символа
+            d_from_property.update({key_find:value_find})  # обновляем словарь
+
+print(d_from_property)
 
 with open('AutrisingConfig.txt', 'r') as f:
     str_read = f.readlines()
