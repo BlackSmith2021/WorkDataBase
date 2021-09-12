@@ -31,7 +31,7 @@ class Change():
         self.cursor.execute(f"DROP TABLE {self.table}")
         self.con.commit()
 
-    def show(self):
+    def show(self) -> object:
         self.cursor.execute(f"SELECT * FROM {self.table}")
         for i in self.cursor.fetchall():
             print(i)
