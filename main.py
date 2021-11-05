@@ -1,12 +1,6 @@
 import psycopg2  # импорт библиотеки
 from class_of_change import Change
 
-"""dbname = None
-user = None
-password = None
-host = None"""
-
-
 def get_property(file='AutrisingConfig.txt'):  # функция упаковки пропертей в словарь
     d_from_property = {}
     with open(file, 'r') as f:
@@ -31,7 +25,7 @@ if None not in (dbname, user, password, host):
                            password=password, host=host)  # связь с базой данных
     cursor = con.cursor()  # создание обькта для взаимодействия с базой
 
-    work_change = Change("staff", cursor, con)
+    work_change = Change("positions", cursor, con)
     # work_change.show()
     # work_change.delet_table()
     # work_change.sett_update(12, 'lastname', 'Gorin')
