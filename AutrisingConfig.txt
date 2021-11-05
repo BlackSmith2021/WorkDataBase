@@ -1,0 +1,4 @@
+dbname = WorkBase
+user = postgres
+password = 14319
+host = localhost
