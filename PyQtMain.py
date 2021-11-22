@@ -41,13 +41,13 @@ class Staff(QMainWindow):   # создание класса окна
         self.model.setHeaderData(1, Qt.Horizontal, "firstName")
         self.model.setHeaderData(2, Qt.Horizontal, "lastName")
         self.model.setHeaderData(3, Qt.Horizontal, "patronymic")
-        self.model.setHeaderData(3, Qt.Horizontal, "position_id")
+        self.model.setHeaderData(4, Qt.Horizontal, "position_id")
         self.model.select()  # загружает данные из базы данных и заполняет модель путем вызова .select().
         # Set up the view
         self.view = QTableView()  # создает объект табличного представления для отображения данных, содержащихся в модели.
         self.view.setModel(self.model)  # связывает представление с моделью, вызывая .setModel() представление с моделью данных в качестве аргумента.
         self.view.resizeColumnsToContents()  # вызывает .resizeColumnsToContents() объект просмотра, чтобы настроить таблицу в соответствии с ее содержимым.
-        self.setCentralWidget(self.view)  # запускает выджет
+        self.setCentralWidget(self.view)  # запускает виджет
 
 
 def createConnection():  # создание соединения с БД
@@ -65,10 +65,10 @@ def createConnection():  # создание соединения с БД
         return False
     return True
 
-
-app = QApplication(sys.argv)
-if not createConnection():
-    sys.exit(1)
-win = Staff()
-win.show()
-sys.exit(app.exec_())
+def slt():
+    app = QApplication(sys.argv)
+    if not createConnection():
+        sys.exit(1)
+    win = Staff()
+    win.show()
+    sys.exit(app.exec_())
