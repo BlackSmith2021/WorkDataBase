@@ -1,5 +1,5 @@
-import psycopg2  # импорт библиотеки
-from class_of_change import Change
+from PyQt5.QtSql import QSqlDatabase
+from PyQt5.QtWidgets import  QMessageBox
 
 def get_property(file='AutrisingConfig.txt'):  # функция упаковки пропертей в словарь
     d_from_property = {}
@@ -20,18 +20,18 @@ user = propertyes['user']
 password = propertyes['password']
 host = propertyes['host']
 
-if None not in (dbname, user, password, host):
-    con = psycopg2.connect(dbname=dbname, user=user,
-                           password=password, host=host)  # связь с базой данных
-    cursor = con.cursor()  # создание обькта для взаимодействия с базой
 
-    work_change = Change("positions", cursor, con)
-    # work_change.show()
-    # work_change.delet_table()
-    # work_change.sett_update(12, 'lastname', 'Gorin')
-    """work_change.appen(["('Andrey', 'Gubin', 'Ivanovich', 40000, 'ingeneer'),"
-                 "('Ivan', 'Solomatin', 'Sergeevich', 38000, 'manager'),"
-                 "('Irina', 'Lobacheva', 'Sergeevna', 30000, 'operator'),"
-                 "('Lybin', 'Ilya', 'Petrovich', 60000, 'director')"],
-                     ["(firstname, lastname, patronymic, salary, position)"])"""
-    work_change.show()
+def createConnection():  # создание соединения с БД
+    con = QSqlDatabase.addDatabase("QPSQL")
+    con.setDatabaseName(dbname)
+    con.setUserName(user)
+    con.setPassword(password)
+    con.setHostName(host)
+    if not con.open():  # проверка на неудачное соединение
+        QMessageBox.critical(
+            None,
+            "QTableView Example - Error!",
+            "Database Error: %s" % con.lastError().databaseText(),
+        )
+        return False
+    return True
